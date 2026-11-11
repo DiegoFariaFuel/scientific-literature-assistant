@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scientific-literature-assistant"
+version = "0.1.0"
+description = "Bilingual hybrid-retrieval RAG assistant for local scientific literature"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26",
+  "pymupdf>=1.24",
+  "rank-bm25>=0.2.2",
+  "requests>=2.32",
+  "sentence-transformers>=3.0",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.115", "uvicorn>=0.30"]
+
+[project.scripts]
+scilit = "scilit.cli:main"
+scilit-api = "scilit.api:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
