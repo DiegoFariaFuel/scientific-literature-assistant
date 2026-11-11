@@ -7,8 +7,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import fitz
 import numpy as np
+import pymupdf
 from sentence_transformers import SentenceTransformer
 
 DOI_PATTERN = re.compile(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+", re.I)
@@ -34,7 +34,7 @@ def _read_pdf(path: Path) -> list[dict[str, Any]]:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()[:16]
     sidecar = path.with_suffix(".json")
     extra = json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else {}
-    with fitz.open(path) as pdf:
+    with pymupdf.open(path) as pdf:
         pdf_title = (pdf.metadata or {}).get("title") or ""
         first_pages = "\n".join(pdf[i].get_text(sort=True) for i in range(min(2, len(pdf))))
         title = str(extra.get("title") or pdf_title or path.stem)
